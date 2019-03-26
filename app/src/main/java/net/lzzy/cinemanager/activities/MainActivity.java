@@ -1,6 +1,7 @@
 package net.lzzy.cinemanager.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import net.lzzy.cinemanager.R;
+import net.lzzy.cinemanager.fragments.CinemasFragment;
+import net.lzzy.cinemanager.fragments.OrderFragment;
+
+import java.util.MissingFormatArgumentException;
 
 /**
  * @author Administrator
@@ -18,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View layoutMenu;
     private TextView tvTitle;
     private SearchView search;
+    private FragmentManager manger=getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        layoutMenu.setVisibility(View.GONE);
+        switch (v.getId()){
+            case R.id.bar_title_tv_add_cinema:
+                break;
+            case R.id.bar_title_tv_view_cinema:
+                tvTitle.setText(R.string.bar_title_menu_cinema);
+                manger.beginTransaction()
+                        .replace(R.id.fragment_container,new CinemasFragment())
+                        .commit();
+                break;
+            case R.id.bar_title_tv_add_order:
+                break;
+            case R.id.bar_title_tv_view_order:
+                tvTitle.setText(R.string.bar_title_menu_orders);
+                manger.beginTransaction().
+                        replace(R.id.fragment_container,new OrderFragment())
+                        .commit();
+                break;
+                default:
+                    break;
+
+        }
 
     }
 }
