@@ -3,10 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/fragment_order_tv"
+        android:id="@+id/fragment_addOrder_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="我的订单"/>
+        android:text="添加订单"/>
 
 </LinearLayout>

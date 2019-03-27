@@ -23,7 +23,7 @@ public class OrderFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_order,null);
-        TextView textView=view.findViewById(R.id.fragment_container);
+        TextView textView=view.findViewById(R.id.fragment_order_tv);
         return view;
     }
 }

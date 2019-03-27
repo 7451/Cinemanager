@@ -13,17 +13,17 @@ import androidx.fragment.app.Fragment;
 import net.lzzy.cinemanager.R;
 
 /**
- * Created by lzzy_gxy on 2019/3/26.
+ * Created by lzzy_gxy on 2019/3/27.
  * Description:
  */
-public class CinemasFragment extends Fragment {
-    public CinemasFragment(){}
+public class AddCinemasFragment extends Fragment {
+    public AddCinemasFragment(){}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_cinemas,null);
-        TextView textView=view.findViewById(R.id.fragment_container_tv);
+        View view=inflater.inflate(R.layout.fragment_addciemas,null);
+        TextView textView=view.findViewById(R.id.fragment_addOrder_tv);
         return view;
     }
 }
