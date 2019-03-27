@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         layoutMenu.setVisibility(View.GONE);
         tvTitle.setText(titleArray.get(v.getId()));
+        // fragment的创建和托管的另一种方式
+        //region
         FragmentTransaction transaction=manger.beginTransaction();
         Fragment fragment=fragmentArray.get(v.getId());
         if (fragment==null){
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //把当前的fragment现示出来
         transaction.show(fragment).commit();
-
+        //endregion
     }
 
     private Fragment createFragment(int id) {
@@ -96,20 +98,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bar_title_tv_add_cinema:
                 return new AddCinemasFragment();
             case R.id.bar_title_tv_view_cinema:
+
                 //fragment的创建和托管的一种方式
+                //region
                 //manger.beginTransaction()
                 //  .replace(R.id.fragment_container,new CinemasFragment())
                 //  .commit();
-                //fragment的创建和托管的一种方式
+                //endregion
+                //fragment的创建和托管的另一种方式
                 return new CinemasFragment();
             case R.id.bar_title_tv_add_order:
                 return new AddOederFragment();
 
             case R.id.bar_title_tv_view_order:
-                //fragment的创建和托管
+                //fragment的创建和托管的一种方式
+                //region
                 // manger.beginTransaction().
                 //      replace(R.id.fragment_container,new OrderFragment())
                 // .commit();
+                //endregion
+                //fragment的创建和托管的另一种方式
                 return new CinemasFragment();
             default:
                 break;

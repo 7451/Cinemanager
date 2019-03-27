@@ -1,29 +1,23 @@
 package net.lzzy.cinemanager.fragments;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import net.lzzy.cinemanager.R;
 
 /**
- * Created by lzzy_gxy on 2019/3/27.
+ *
+ * @author lzzy_gxy
+ * @date 2019/3/27
  * Description:
  */
-public class AddOederFragment extends Fragment {
-    public AddOederFragment(){}
+public class AddOederFragment extends BaseFragment {
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_addorder,null);
-        TextView textView=view.findViewById(R.id.fragment_addCinemas_tv);
-        return view;
+    protected void populate() {
+        TextView tv=find(R.id.fragment_addOrder_tv);
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.fragment_addorder;
     }
 }

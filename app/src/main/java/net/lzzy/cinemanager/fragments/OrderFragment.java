@@ -13,17 +13,20 @@ import androidx.fragment.app.Fragment;
 import net.lzzy.cinemanager.R;
 
 /**
- * Created by lzzy_gxy on 2019/3/26.
+ *
+ * @author lzzy_gxy
+ * @date 2019/3/26
  * Description:
  */
-public class OrderFragment extends Fragment {
-    public OrderFragment(){}
+public class OrderFragment extends BaseFragment {
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_order,null);
-        TextView textView=view.findViewById(R.id.fragment_order_tv);
-        return view;
+    protected void populate() {
+        TextView tv = find(R.id.fragment_order_tv);
+    }
+
+    @Override
+    public int getLayoutRes() {
+        return R.layout.fragment_order;
     }
 }
