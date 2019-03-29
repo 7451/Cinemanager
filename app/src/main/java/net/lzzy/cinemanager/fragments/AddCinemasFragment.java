@@ -1,6 +1,6 @@
 package net.lzzy.cinemanager.fragments;
 
-import android.view.View;
+import android.content.Context;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -12,6 +12,7 @@ import com.lljjcoder.style.cityjd.JDCityPicker;
 
 import net.lzzy.cinemanager.R;
 import net.lzzy.cinemanager.models.Cinema;
+
 
 /**
  *
@@ -25,13 +26,17 @@ public class AddCinemasFragment extends BaseFragment {
     private String area="鱼峰区";
     private TextView tvArea;
     private EditText edtName;
+    private OnFragmentInteractionListener listener;
+    private OnCinemaCreatedListener createdListener;
 
     @Override
     protected void populate() {
+        //调用接口
+        listener.hideSearch();
         tvArea = find(R.id.dialog_add_tv_area);
         edtName = find(R.id.dialog_add_cinema_edt_name);
         find(R.id.dialog_add_cinema_btn_cancel)
-                .setOnClickListener(v -> {});
+                .setOnClickListener(v -> { createdListener.cancelAddCinema();});
 
         find(R.id.dialog_add_cinema_layout_area).setOnClickListener(v -> {
             JDCityPicker cityPicker = new JDCityPicker();
@@ -60,7 +65,7 @@ public class AddCinemasFragment extends BaseFragment {
             cinema.setCity(city);
             cinema.setProvince(province);
             cinema.setLocation(tvArea.getText().toString());
-            //adapter.add(cinema);
+            createdListener.saveCinema(cinema);
             edtName.setText("");
         });
     }
@@ -69,4 +74,46 @@ public class AddCinemasFragment extends BaseFragment {
     public int getLayoutRes() {
         return R.layout.fragment_addciemas;
     }
+
+    /**防止第二次进入Activity时，接口方法失效*/
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            listener.hideSearch();
+        }
+    }
+
+    /**
+     * 接口初始化
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            listener= (OnFragmentInteractionListener) context;
+            createdListener= (OnCinemaCreatedListener) context;
+        }catch (ClassCastException e){
+            throw new ClassCastException(context.toString()+
+                    "必须实现OnFragmentInteractionListener接口&OnCinemaCreatedListener接口");
+        }
+
+    }
+
+    /**销毁接口*/
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener=null;
+        createdListener=null;
+    }
+    public interface OnCinemaCreatedListener{
+        /**取消保存数据*/
+        void cancelAddCinema();
+        /**保存数据
+         * @param cinema rule cinema
+         */
+        void saveCinema(Cinema cinema);
+    }
+
 }

@@ -23,6 +23,12 @@ public class CinemasFragment extends BaseFragment {
     private CinemaFactory factory=CinemaFactory.getInstance();
     private List<Cinema> cinemas;
     private GenericAdapter<Cinema> adapter;
+    private Cinema cinema;
+    public CinemasFragment(){}
+
+    public CinemasFragment(Cinema cinema){
+        this.cinema=cinema;
+    }
 
     @Override
     protected void populate() {
@@ -49,8 +55,14 @@ public class CinemasFragment extends BaseFragment {
             }
         };
         lv.setAdapter(adapter);
+        if (cinema!=null){
+            save(cinema);
+        }
 
 
+    }
+    public void save(Cinema cinema){
+        adapter.add(cinema);
     }
 
     @Override
