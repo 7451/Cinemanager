@@ -1,5 +1,6 @@
 package net.lzzy.cinemanager.fragments;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import net.lzzy.cinemanager.R;
@@ -69,4 +70,16 @@ public class CinemasFragment extends BaseFragment {
     public int getLayoutRes() {
         return R.layout.fragment_cinemas;
     }
+
+    @Override
+    public void search(String kw) {
+        cinemas.clear();
+        if (TextUtils.isEmpty(kw)){
+            cinemas.addAll(factory.get());
+        }else {
+            cinemas.addAll(factory.searchCinemas(kw));
+        }
+        adapter.notifyDataSetChanged();
+    }
+
 }

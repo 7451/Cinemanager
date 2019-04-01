@@ -68,11 +68,17 @@ public class AddCinemasFragment extends BaseFragment {
             createdListener.saveCinema(cinema);
             edtName.setText("");
         });
+
     }
 
     @Override
     public int getLayoutRes() {
         return R.layout.fragment_addciemas;
+    }
+
+    @Override
+    public void search(String kw) {
+
     }
 
     /**防止第二次进入Activity时，接口方法失效*/
