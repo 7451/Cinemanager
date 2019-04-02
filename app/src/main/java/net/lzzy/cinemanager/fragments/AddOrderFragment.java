@@ -45,7 +45,6 @@ public class AddOrderFragment extends BaseFragment {
     @Override
     protected void populate() {
         listener.hideSearch();
-
         edtName = find(R.id.dialog_add_order_edt_name);
         tvDate = find(R.id.activity_add_book_tv_date);
         spOrder = find(R.id.dialog_add_order_sp_area);

@@ -158,6 +158,7 @@ AddOrderFragment.OnOrderCreatedListener{
         }
         transaction.hide(addCinemasFragment).show(cinemasFragment).commit();
         tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_cinema));
+        search.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -179,6 +180,7 @@ AddOrderFragment.OnOrderCreatedListener{
         }
         transaction.hide(addCinemasFragment).show(cinemasFragment).commit();
         tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_cinema));
+        search.setVisibility(View.VISIBLE);
 
 
     }
@@ -198,6 +200,7 @@ AddOrderFragment.OnOrderCreatedListener{
         }
         transaction.hide(addOrderFragment).show(orderFragment).commit();
         tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_order));
+        search.setVisibility(View.VISIBLE);
 
     }
 
@@ -220,6 +223,7 @@ AddOrderFragment.OnOrderCreatedListener{
         }
         transaction.hide(addOrderFragment).show(orderFragment).commit();
         tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_order));
+        search.setVisibility(View.VISIBLE);
 
     }
 }

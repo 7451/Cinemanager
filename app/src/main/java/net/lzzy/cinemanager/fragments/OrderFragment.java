@@ -2,6 +2,7 @@ package net.lzzy.cinemanager.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,20 +36,17 @@ import java.util.List;
  * Description:
  */
 public class OrderFragment extends BaseFragment {
-
+    public static final int MIN_DISTANCE = 100;
     private ListView lv;
     private View empty;
     private OrderFactory factory=OrderFactory.getInstance();
     private List<Order> orders;
     private Order order;
-    private List<Cinema> cinemas;
     private GenericAdapter<Order> adapter;
-    private Spinner spOrder;
     private Button but;
     private float touchX1;
-    private float touchX2;
-    private boolean isDelete;
-    public static final int MIN_DISTANCE = 100;
+    private boolean isDelete=false;
+
 
     public OrderFragment(){}
     public OrderFragment(Order order){
@@ -59,7 +57,6 @@ public class OrderFragment extends BaseFragment {
     protected void populate() {
         lv = find(R.id.fragment_cinema_lv);
         empty = find(R.id.fragment_cinemas_tv_none);
-        spOrder = find(R.id.dialog_add_order_sp_area);
         lv.setEmptyView(empty);
         orders=factory.get();
         adapter = new GenericAdapter<Order>(getActivity(),R.layout.order_item,orders) {
@@ -70,18 +67,20 @@ public class OrderFragment extends BaseFragment {
                 viewHolder.setTextView(R.id.order_item_movieName,order.getMovie())
                         .setTextView(R.id.order_item_area,location);
 
-
                 but = viewHolder.getView(R.id.order_item_btn);
                 but.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new AlertDialog.Builder(getActivity())
+                        new AlertDialog.Builder(getContext())
                                 .setTitle("删除确认")
                                 .setMessage("要删除订单吗？")
                                 .setNegativeButton("取消",null)
-                                .setPositiveButton("确定", (dialog, which) -> adapter.remove(order)).show();
+                                .setPositiveButton("确定", (dialog, which) -> { isDelete=false;adapter.remove(order); }).show();
                     }
                 });
+                int visibility=isDelete?View.VISIBLE:View.GONE;
+                but.setVisibility(visibility);
+
                 viewHolder.getConvertView().setOnTouchListener(new ViewUtils.AbstractTouchHandler() {
                     @Override
                     public boolean handleTouch(MotionEvent event) {
@@ -107,15 +106,14 @@ public class OrderFragment extends BaseFragment {
         }
 
     }
-
     private void slideToDelete(MotionEvent event, Order order, Button but) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 touchX1=event.getX();
                 break;
             case MotionEvent.ACTION_UP:
-                touchX2 =event.getX();
-                if (touchX1-touchX2> MIN_DISTANCE){
+                float touchX2 = event.getX();
+                if (touchX1- touchX2 > MIN_DISTANCE){
                     if (!isDelete){
                         but.setVisibility(View.VISIBLE);
                         isDelete=true;
@@ -134,14 +132,16 @@ public class OrderFragment extends BaseFragment {
                 break;
         }
     }
+
+
     private void clickOrder(Order order) {
         Cinema cinema=CinemaFactory.getInstance()
                 .getById(order.getCinemaId().toString().toString());
         String content="["+order.getMovie()+"]"+order.getMovieTime()+"\n"+cinema+"票价"+order.getPrice()+"元";
-        View view= LayoutInflater.from(getActivity()).inflate(R.layout.dialog_qrcode,null);
+        View view= LayoutInflater.from(getContext()).inflate(R.layout.dialog_qrcode,null);
         ImageView img=view.findViewById(R.id.dialog_qrcode_img);
         img.setImageBitmap(AppUtils.createQRCodeBitmap(content,300,300));
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(getContext())
                 .setView(view).show();
     }
     @Override
@@ -155,7 +155,13 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void search(String kw) {
-
+        orders.clear();
+        if (TextUtils.isEmpty(kw)) {
+            orders.addAll(factory.get());
+        }else {
+            orders.addAll(factory.searchOrders(kw));
+        }
+        adapter.notifyDataSetChanged();
     }
 
 }
