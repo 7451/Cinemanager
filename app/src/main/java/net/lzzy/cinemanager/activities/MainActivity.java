@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
@@ -20,6 +21,7 @@ import net.lzzy.cinemanager.fragments.CinemasFragment;
 import net.lzzy.cinemanager.fragments.OnFragmentInteractionListener;
 import net.lzzy.cinemanager.fragments.OrderFragment;
 import net.lzzy.cinemanager.models.Cinema;
+import net.lzzy.cinemanager.models.CinemaFactory;
 import net.lzzy.cinemanager.models.Order;
 import net.lzzy.cinemanager.utils.ViewUtils;
 
@@ -28,7 +30,7 @@ import net.lzzy.cinemanager.utils.ViewUtils;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         OnFragmentInteractionListener,AddCinemasFragment.OnCinemaCreatedListener,
-AddOrderFragment.OnOrderCreatedListener{
+AddOrderFragment.OnOrderCreatedListener, CinemasFragment.OnCinemaSelectedListener {
 
     private View layoutMenu;
     private TextView tvTitle;
@@ -36,6 +38,7 @@ AddOrderFragment.OnOrderCreatedListener{
     private FragmentManager manger=getSupportFragmentManager();
     private SparseArray<String> titleArray=new SparseArray<>();
     private SparseArray<Fragment> fragmentArray=new SparseArray<>();
+    public static final String EXTRA_CINEMA_ID = "cinemaId";
 
 
     @Override
@@ -167,11 +170,12 @@ AddOrderFragment.OnOrderCreatedListener{
         if (addCinemasFragment==null){
             return;
         }
+
         Fragment cinemasFragment=fragmentArray.get(R.id.bar_title_tv_view_cinema);
         FragmentTransaction transaction=manger.beginTransaction();
         if (cinemasFragment==null){
         //创建CinemasFragment同时要传Cinema对象进来
-            cinemasFragment=new CinemasFragment(cinema);
+            cinemasFragment=CinemasFragment.newInstance(cinema);
             fragmentArray.put(R.id.bar_title_tv_view_cinema,cinemasFragment);
             transaction.add(R.id.fragment_container,cinemasFragment);
         }else {
@@ -214,7 +218,7 @@ AddOrderFragment.OnOrderCreatedListener{
         FragmentTransaction transaction=manger.beginTransaction();
         if (orderFragment==null){
             //创建CinemasFragment同时要传Cinema对象进来
-            orderFragment=new OrderFragment(order);
+            orderFragment=OrderFragment.newInstance(order);
             fragmentArray.put(R.id.bar_title_tv_view_order,orderFragment);
             transaction.add(R.id.fragment_container,orderFragment);
         }else {
@@ -225,5 +229,12 @@ AddOrderFragment.OnOrderCreatedListener{
         tvTitle.setText(titleArray.get(R.id.bar_title_tv_view_order));
         search.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public void onCinemaSelected(String cinemaId) {
+        Intent intent=new Intent(MainActivity.this,CinemasOrderActivity.class);
+        intent.putExtra(EXTRA_CINEMA_ID,cinemaId);
+        startActivity(intent);
     }
 }

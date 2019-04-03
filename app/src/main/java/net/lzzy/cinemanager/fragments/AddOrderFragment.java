@@ -18,6 +18,7 @@ import net.lzzy.cinemanager.models.CinemaFactory;
 import net.lzzy.cinemanager.models.Order;
 import net.lzzy.cinemanager.utils.AppUtils;
 import net.lzzy.simpledatepicker.CustomDatePicker;
+import net.lzzy.sqllib.GenericAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,6 +42,8 @@ public class AddOrderFragment extends BaseFragment {
     private ImageView imgQRCode;
     List<Cinema> cinemas;
     private CustomDatePicker datePicker;
+    private CinemaFactory cinemaFactory;
+    private ArrayAdapter<Cinema> adapter;
 
     @Override
     protected void populate() {
@@ -61,8 +64,9 @@ public class AddOrderFragment extends BaseFragment {
     private void addListener() {
         cinemas= CinemaFactory.getInstance().get();
         //获取cinema中的地址
-        spOrder.setAdapter(new ArrayAdapter<>
-                (getActivity(),android.R.layout.simple_spinner_dropdown_item, cinemas));
+        adapter = new ArrayAdapter<>
+                        (getActivity(),android.R.layout.simple_spinner_dropdown_item, cinemas);
+        spOrder.setAdapter(adapter);
 
         find(R.id.dialog_add_order_btn_cancel)
                 .setOnClickListener(v -> {orderListener.cancelAddOrder(); });
@@ -152,6 +156,9 @@ public class AddOrderFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden){
             listener.hideSearch();
+            cinemas.clear();
+            cinemas.addAll(cinemaFactory.get());
+            adapter.notifyDataSetChanged();
         }
     }
 

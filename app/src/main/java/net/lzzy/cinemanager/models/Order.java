@@ -1,9 +1,13 @@
 package net.lzzy.cinemanager.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import net.lzzy.sqllib.Ignored;
 import net.lzzy.sqllib.Sqlitable;
 import net.lzzy.sqllib.Table;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -11,7 +15,7 @@ import java.util.UUID;
  * Description:
  */
 @Table(name = "Orders")
-public class Order extends BaseEntity implements Sqlitable {
+public class Order extends BaseEntity implements Sqlitable, Parcelable {
     @Ignored
     static final String COL_MOVIE = "movie";
     @Ignored
@@ -24,6 +28,25 @@ public class Order extends BaseEntity implements Sqlitable {
     private String movieTime;
     private float price;
     private UUID cinemaId;
+    public Order(){}
+    protected Order(Parcel in) {
+        movie = in.readString();
+        movieTime = in.readString();
+        price = in.readFloat();
+        cinemaId= UUID.fromString(in.readString());
+    }
+    @Ignored
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
 
     public String getMovie() {
         return movie;
@@ -60,5 +83,18 @@ public class Order extends BaseEntity implements Sqlitable {
     @Override
     public boolean needUpdate() {
         return false;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(movie);
+        dest.writeString(movieTime);
+        dest.writeFloat(price);
+        dest.writeString(cinemaId.toString());
     }
 }

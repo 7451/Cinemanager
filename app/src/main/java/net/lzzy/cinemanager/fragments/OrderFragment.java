@@ -37,21 +37,37 @@ import java.util.List;
  */
 public class OrderFragment extends BaseFragment {
     public static final int MIN_DISTANCE = 100;
+    public static final String ARGS_ORDER = "order";
     private ListView lv;
     private View empty;
     private OrderFactory factory=OrderFactory.getInstance();
     private List<Order> orders;
     private Order order;
     private GenericAdapter<Order> adapter;
-    private Button but;
     private float touchX1;
     private boolean isDelete=false;
 
 
-    public OrderFragment(){}
-    public OrderFragment(Order order){
-        this.order=order;
+    public static OrderFragment newInstance(Order order){
+        OrderFragment fragment=new OrderFragment();
+        Bundle args=new Bundle();
+        args.putParcelable(ARGS_ORDER,order);
+        fragment.setArguments(args);
+        return fragment;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments()!=null){
+            order=getArguments().getParcelable(ARGS_ORDER);
+        }
+
+    }
+    //    public OrderFragment(){}
+//    public OrderFragment(Order order){
+//        this.order=order;
+//    }
 
     @Override
     protected void populate() {
@@ -67,7 +83,7 @@ public class OrderFragment extends BaseFragment {
                 viewHolder.setTextView(R.id.order_item_movieName,order.getMovie())
                         .setTextView(R.id.order_item_area,location);
 
-                but = viewHolder.getView(R.id.order_item_btn);
+                Button but = viewHolder.getView(R.id.order_item_btn);
                 but.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

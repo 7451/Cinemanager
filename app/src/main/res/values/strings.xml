@@ -11,5 +11,6 @@
     <string name="bar_title_menu_add_name">&#160;&#160;请输入电影院名称&#160;&#160;</string>
     <string name="bar_title_menu_add_cancel">&#160;&#160;取消&#160;&#160;</string>
     <string name="bar_title_menu_add_ok">&#160;&#160;确定&#160;&#160;</string>
+    <string name="title_activity_cinemas_order">CinemasOrderActivity</string>
 
 </resources>
